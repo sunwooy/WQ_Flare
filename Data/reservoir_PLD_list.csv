@@ -1,4 +1,4 @@
-﻿Lake_Name,PLD_id,Offset_for_Depth
-Carvins Cove Reservoir ,7320364743,336.2528025
-Falling Creek Reservoir,7320364942,498.2115328
-Beaverdam Reservoir,7320364932,574.0368257
+﻿Lake_Name,PLD_id,Offset_for_Depth,site
+Carvins Cove Reservoir ,7320364743,336.2528025,ccre
+Falling Creek Reservoir,7320364942,498.2115328,fcre
+Beaverdam Reservoir,7320364932,574.0368257,bvre
