@@ -11,7 +11,7 @@ PLD_list_dir = r"https://raw.githubusercontent.com/sunwooy/WQ_Flare/refs/heads/m
 output_dir = "/app/output"
 os.makedirs(output_dir, exist_ok=True)
 
-output_file = os.path.join(output_dir, "PLD_TS.csv")
+# output_file = os.path.join(output_dir, "PLD_TS.csv")
 
 
 
@@ -35,6 +35,7 @@ swot_vars = (
 PLD = pd.read_csv(PLD_list_dir)
 id_list = PLD['PLD_id']
 
+output_file = os.path.join(output_dir, f"PLD_TS_{run_date}.csv")
 swot_out = output_file
 swot_df = None
 

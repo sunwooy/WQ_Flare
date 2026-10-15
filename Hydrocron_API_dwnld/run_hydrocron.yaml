@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hydrocron-output
-          path: output/
+          path: output/PLD_TS_*.csv
           retention-days: 30
           if-no-files-found: error
 
