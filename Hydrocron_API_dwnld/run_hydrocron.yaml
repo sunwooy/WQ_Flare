@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build Docker image
-        run: docker build -t hydrocron .
+        run: docker build -t hydrocron ./Hydrocron_API_dwnld
   
       - name: Create output directory
         run: mkdir -p output
