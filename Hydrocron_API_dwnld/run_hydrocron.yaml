@@ -1,0 +1,39 @@
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "15 15 * * *"
+
+jobs:
+  run_hydrocron:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build Docker image
+        run: docker build -t hydrocron .
+  
+      - name: Create output directory
+        run: mkdir -p output
+
+      - name: Run Hydrocron script
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}/output:/app/output" \
+            hydrocron
+
+      - name: Save Hydrocron output
+        uses: actions/upload-artifact@v4
+        with:
+          name: hydrocron-output
+          path: output/
+          retention-days: 30
+          if-no-files-found: error
+
+#  # Point to the right path, run the right Rscript command
+#       - name: Run Hydrocron Data Submission
+#         run: python WQ_Flare/Hydrocron_API_dwnld/Hydrocron_API_dwnld.py
+        
