@@ -35,7 +35,7 @@ swot_vars = (
 PLD = pd.read_csv(PLD_list_dir)
 id_list = PLD['PLD_id']
 
-output_file = os.path.join(output_dir, f"PLD_TS_{run_date}.csv")
+output_file = os.path.join(output_dir, f"PLD_TS_{date2}.csv")
 swot_out = output_file
 swot_df = None
 
