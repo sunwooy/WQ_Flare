@@ -95,6 +95,7 @@ if swot_df is not None and not swot_df.empty:
     "time": "datetime", 
     "wse": "observation"})
     swot_df["variable"] = "depth"
+    swot_df = swot_df[["site_id", "depth", "variable", "datetime", "observation", ]]
     swot_df.to_csv(swot_out, index=False)
 
 else:
