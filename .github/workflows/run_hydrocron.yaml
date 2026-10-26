@@ -1,7 +1,12 @@
+name: Hydrocron Download
+
 on:
   workflow_dispatch:
   schedule:
-  - cron: "0 12 * * *"
+    - cron: "0 12 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   run_hydrocron:
@@ -9,13 +14,13 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Build Docker image
         run: docker build -t hydrocron ./Hydrocron_API_dwnld
-  
+
       - name: Create output directory
         run: mkdir -p output
 
@@ -25,15 +30,20 @@ jobs:
             -v "${{ github.workspace }}/output:/app/output" \
             hydrocron
 
-      - name: Save Hydrocron output
-        uses: actions/upload-artifact@v4
-        with:
-          name: hydrocron-output
-          path: output/PLD_TS_*.csv
-          retention-days: 30
-          if-no-files-found: error
+      - name: Verify output
+        run: |
+          test -s output/PLD_TS.csv
 
-#  # Point to the right path, run the right Rscript command
-#       - name: Run Hydrocron Data Submission
-#         run: python WQ_Flare/Hydrocron_API_dwnld/Hydrocron_API_dwnld.py
-        
+      - name: Commit Hydrocron output
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add output/PLD_TS.csv
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Hydrocron output"
+            git push
+          else
+            echo "No changes to commit"
+          fi
