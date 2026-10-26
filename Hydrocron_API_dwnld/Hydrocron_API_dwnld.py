@@ -35,7 +35,7 @@ swot_vars = (
 PLD = pd.read_csv(PLD_list_dir)
 id_list = PLD['PLD_id']
 
-output_file = os.path.join(output_dir, f"PLD_TS_{date2}.csv")
+output_file = os.path.join(output_dir, "PLD_TS.csv")
 swot_out = output_file
 swot_df = None
 
@@ -76,9 +76,9 @@ for PLD_id in id_list:
             # Filter 
             df = df[df["wse_u"] < 1.3]
 
-            # Add depth
-            depth = PLD.loc[PLD["PLD_id"] == PLD_id, "Offset_for_Depth"].iloc[0]
-            df["depth"] = df["wse"] - depth
+            # Convert SWOT observed WSE to pressure transducer elevation
+            offset = PLD.loc[PLD["PLD_id"] == PLD_id, "Offset_for_PT"].iloc[0]
+            df["observation"] = df["wse"] - offset
 
             # Add site
             df["site_id"] = PLD.loc[PLD["PLD_id"] == PLD_id, "site"].iloc[0]
@@ -91,11 +91,10 @@ for PLD_id in id_list:
 
 if swot_df is not None and not swot_df.empty:
     # Organize into proper FLARE format
-    swot_df = swot_df.rename(columns={
-    "time": "datetime", 
-    "wse": "observation"})
-    swot_df["variable"] = "depth"
-    swot_df = swot_df[["site_id", "depth", "variable", "datetime", "observation", ]]
+    swot_df = swot_df.rename(columns={"time": "datetime"})
+    swot_df["variable"] = "elevation_m"
+    swot_df["depth"] = pd.NA
+    swot_df = swot_df[["site_id", "observation", "variable", "depth", "datetime"]]
     swot_df.to_csv(swot_out, index=False)
 
 else:
